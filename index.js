@@ -31,11 +31,8 @@ app.use(function (req, res, next) {
 app.use(express.json());
 app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 100, headers: true }));
 
-app.post('/player/growid/login/validate', (req, res) => {
-    res.send(
-        `{"status":"success","message":"Account Validated.","token":"","url":"","accountType":"growtopia"}`,
-    );
-  res.send('<script>window.close();</script>');
+app.post('/player/login/dashboard', (req, res) => {
+    res.sendFile(__dirname + '/public/html/dashboard.html');
 });
 
 app.all('/player/growid/login/validate', (req, res) => {
