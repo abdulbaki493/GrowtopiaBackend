@@ -23,10 +23,32 @@ app.use(function (req, res, next) {
     );
     next();
 });
-app.all('/player/growid/login/validate', (req, res) => {
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(function (req, res, next) {
+    console.log(req.method, req.url);
+    next();
+});
+app.use(express.json());
+app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 100, headers: true }));
+
+app.post('/player/growid/login/validate', (req, res) => {
     res.send(
-        `{"status":"success","message":"Account Validated.","token":"","url":"","accountType":"growtopia"}`,
-        res.send('<script>window.close();</script>');
+        `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
+    );
+  res.send('<script>window.close();</script>');
+});
+
+app.all('/player/growid/login/validate', (req, res) => {
+    const _token = req.body._token;
+    const growId = req.body.growId;
+    const password = req.body.password;
+
+    const token = Buffer.from(
+        `_token=${_token}&growId=${growId}&password=${password}`,
+    ).toString('base64');
+
+    res.send(
+        `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
     );
 });
 
@@ -35,7 +57,7 @@ app.post('/player/validate/close', function (req, res) {
 });
 
 app.get('/', function (req, res) {
-    res.send('send me dm discord "bybakiw"');
+    res.send('Hello World!');
 });
 
 app.listen(5000, function () {
