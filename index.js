@@ -33,7 +33,7 @@ app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 100, headers: true }));
 
 app.post('/player/growid/login/validate', (req, res) => {
     res.send(
-        `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
+        `{"status":"success","message":"Account Validated.","token":"","url":"","accountType":"growtopia"}`,
     );
   res.send('<script>window.close();</script>');
 });
@@ -48,7 +48,7 @@ app.all('/player/growid/login/validate', (req, res) => {
     ).toString('base64');
 
     res.send(
-        `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
+        `{"status":"success","message":"Account Validated.","token":"","url":"","accountType":"growtopia"}`,
     );
 });
 
